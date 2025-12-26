@@ -48,11 +48,17 @@ function toggleTheme() {
         themeSwitch.classList.add('dark');
         localStorage.setItem('theme', 'dark');
     }
+
+    // Update theme color for mobile browsers
+    updateThemeColor();
 }
 
 function init() {
     // Initialize theme first
     initializeTheme();
+
+    // Mobile-specific optimizations
+    setupMobileOptimizations();
 
     // Extract note ID from URL path (e.g., /01KDECFWYDMS857DZMCR680MCY)
     const pathname = window.location.pathname;
@@ -91,6 +97,60 @@ function init() {
         });
     } else {
         console.error('Element with ID "noteIdInput" not found');
+    }
+}
+
+// Mobile-specific optimizations
+function setupMobileOptimizations() {
+    // Prevent iOS zoom on input focus by ensuring font-size is at least 16px
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    if (isMobile) {
+        // Handle virtual keyboard on mobile
+        const noteContent = document.getElementById('noteContent');
+        if (noteContent) {
+            noteContent.addEventListener('focus', function() {
+                // Small delay to let the virtual keyboard appear
+                setTimeout(() => {
+                    this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 300);
+            });
+
+            // Prevent losing focus when scrolling on mobile
+            noteContent.addEventListener('touchmove', function(e) {
+                e.stopPropagation();
+            }, { passive: true });
+        }
+
+        // Update theme color based on current theme
+        updateThemeColor();
+    }
+
+    // Handle orientation change
+    window.addEventListener('orientationchange', function() {
+        // Fix viewport height issues on mobile browsers
+        setTimeout(() => {
+            const vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }, 100);
+    });
+
+    // Set initial viewport height
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+
+// Update theme color meta tag based on current theme
+function updateThemeColor() {
+    const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+    const currentTheme = document.body.getAttribute('data-theme');
+
+    if (themeColorMeta) {
+        if (currentTheme === 'dark') {
+            themeColorMeta.setAttribute('content', '#2d2d2d');
+        } else {
+            themeColorMeta.setAttribute('content', '#007bff');
+        }
     }
 }
 

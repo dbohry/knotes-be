@@ -45,9 +45,11 @@ body {
     background-color: var(--bg-primary);
     color: var(--text-primary);
     height: 100vh;
+    height: calc(var(--vh, 1vh) * 100); /* Fallback for mobile browsers */
     display: flex;
     flex-direction: column;
     transition: background-color 0.3s ease, color 0.3s ease;
+    overflow-x: hidden;
 }
 
 .header {
@@ -230,4 +232,328 @@ body {
 
 .hidden {
     display: none;
+}
+
+/* Mobile-First Responsive Design */
+
+/* Base styles are already mobile-friendly, now add tablet and desktop improvements */
+
+/* Small smartphones (portrait) */
+@media screen and (max-width: 480px) {
+    .header {
+        padding: 12px 15px;
+        min-height: 56px;
+        flex-wrap: nowrap;
+    }
+
+    .title {
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .header-right {
+        gap: 8px;
+        flex-shrink: 0;
+    }
+
+    .note-id {
+        font-size: 10px;
+        padding: 3px 6px;
+        max-width: 80px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    /* Make theme switch more touch-friendly */
+    .theme-switch {
+        width: 48px;
+        height: 28px;
+        padding: 6px;
+        min-width: 48px;
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .theme-switch::before {
+        width: 18px;
+        height: 18px;
+        left: 6px;
+    }
+
+    .theme-switch.dark::before {
+        transform: translateX(18px);
+    }
+
+    /* Touch-friendly buttons */
+    .new-btn {
+        padding: 10px 14px;
+        font-size: 13px;
+        min-height: 44px;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Optimize text area for mobile */
+    .note-area {
+        padding: 20px 15px;
+        font-size: 16px; /* Prevents zoom on iOS */
+        line-height: 1.5;
+        -webkit-appearance: none;
+        border-radius: 0;
+    }
+
+    /* Mobile-optimized modal */
+    .id-input-overlay {
+        padding: 20px 15px;
+        align-items: flex-start;
+        padding-top: 25vh;
+    }
+
+    .id-input-dialog {
+        padding: 24px 20px;
+        margin: 0;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 320px;
+    }
+
+    .id-input-dialog h3 {
+        font-size: 18px;
+        margin-bottom: 16px;
+    }
+
+    .id-input {
+        padding: 14px 12px;
+        font-size: 16px; /* Prevents zoom on iOS */
+        border-radius: 8px;
+        margin-bottom: 20px;
+        -webkit-appearance: none;
+    }
+
+    .dialog-buttons {
+        gap: 12px;
+        flex-direction: row;
+    }
+
+    .dialog-btn {
+        flex: 1;
+        padding: 12px 16px;
+        font-size: 14px;
+        font-weight: 500;
+        min-height: 44px;
+        border-radius: 8px;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+    }
+}
+
+/* Larger smartphones and small tablets (landscape phones) */
+@media screen and (min-width: 481px) and (max-width: 768px) {
+    .header {
+        padding: 15px 20px;
+    }
+
+    .title {
+        font-size: 18px;
+    }
+
+    .note-area {
+        padding: 25px 20px;
+        font-size: 16px;
+    }
+
+    .id-input-dialog {
+        max-width: 400px;
+        padding: 28px 24px;
+    }
+
+    .theme-switch {
+        width: 46px;
+        height: 26px;
+    }
+
+    .theme-switch::before {
+        width: 17px;
+        height: 17px;
+        left: 5px;
+    }
+
+    .theme-switch.dark::before {
+        transform: translateX(19px);
+    }
+}
+
+/* Tablets and small desktops */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    .header {
+        padding: 16px 24px;
+        min-height: 64px;
+    }
+
+    .title {
+        font-size: 20px;
+    }
+
+    .note-area {
+        padding: 32px 28px;
+        font-size: 17px;
+    }
+
+    .new-btn {
+        padding: 10px 18px;
+        font-size: 15px;
+    }
+}
+
+/* Large screens and desktops */
+@media screen and (min-width: 1025px) {
+    .header {
+        padding: 18px 32px;
+        min-height: 68px;
+    }
+
+    .title {
+        font-size: 22px;
+    }
+
+    .note-area {
+        padding: 40px 36px;
+        font-size: 18px;
+    }
+
+    .id-input-dialog {
+        max-width: 480px;
+        padding: 36px 32px;
+    }
+}
+
+/* Touch-specific improvements */
+@media (hover: none) and (pointer: coarse) {
+    /* This targets touch devices specifically */
+
+    .new-btn:hover,
+    .dialog-btn:hover,
+    .theme-switch:hover {
+        /* Remove hover effects on touch devices */
+        background: var(--accent-primary);
+        opacity: 1;
+    }
+
+    .dialog-btn.secondary:hover {
+        background: var(--accent-secondary);
+        opacity: 1;
+    }
+
+    .theme-switch:hover {
+        background: var(--bg-tertiary);
+    }
+
+    /* Add active states for touch feedback */
+    .new-btn:active {
+        background: var(--accent-primary-hover);
+        transform: scale(0.98);
+    }
+
+    .dialog-btn:active {
+        transform: scale(0.98);
+    }
+
+    .theme-switch:active {
+        transform: scale(0.95);
+    }
+}
+
+/* High-DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .theme-switch::before {
+        box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    .id-input-dialog {
+        box-shadow: 0 8px 32px var(--shadow);
+    }
+}
+
+/* Landscape orientation optimizations */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .header {
+        min-height: 48px;
+        padding: 10px 15px;
+    }
+
+    .title {
+        font-size: 14px;
+    }
+
+    .new-btn {
+        padding: 8px 12px;
+        font-size: 12px;
+        min-height: 36px;
+    }
+
+    .theme-switch {
+        width: 40px;
+        height: 22px;
+        min-height: 36px;
+    }
+
+    .theme-switch::before {
+        width: 14px;
+        height: 14px;
+        left: 4px;
+    }
+
+    .theme-switch.dark::before {
+        transform: translateX(16px);
+    }
+
+    .note-area {
+        padding: 15px;
+        font-size: 15px;
+    }
+
+    .id-input-overlay {
+        padding-top: 10vh;
+    }
+
+    .id-input-dialog {
+        padding: 20px;
+        max-width: 400px;
+    }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .theme-switch::before {
+        transition: none;
+    }
+
+    body {
+        transition: none;
+    }
+}
+
+/* Dark theme specific mobile adjustments */
+[data-theme="dark"] {
+    /* Better contrast for mobile screens */
+    --text-primary: #f0f0f0;
+    --text-secondary: #c0c0c0;
+    --border-primary: #4a4a4a;
+}
+
+@media screen and (max-width: 480px) {
+    [data-theme="dark"] {
+        --bg-primary: #0d1117;
+        --bg-secondary: #1c2128;
+        --bg-tertiary: #2d333b;
+    }
 }
