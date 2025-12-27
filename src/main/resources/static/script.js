@@ -393,15 +393,12 @@ function hideIdInput() {
 
 function loadNoteFromInput() {
     const noteIdInput = document.getElementById('noteIdInput');
-    if (!noteIdInput) {
-        console.error('Element with ID "noteIdInput" not found in loadNoteFromInput');
-        return;
-    }
+    if (!noteIdInput) return;
 
     const id = noteIdInput.value.trim();
     if (id) {
         hideIdInput();
-        loadNoteById(id);
+        window.location.href = `/${id}`;
     }
 }
 
