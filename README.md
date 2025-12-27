@@ -2,14 +2,6 @@
 
 A modern, efficient note-taking application with automatic compression, dark mode theming, and mobile-responsive design.
 
-## Features
-
-- **Real-time auto-save**
-- **GZIP compression**
-- **Dark/Light themes**
-- **Mobile responsive**
-- **URL-based navigation**
-
 ## Quick Start
 
 ### Prerequisites
