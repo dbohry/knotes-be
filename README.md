@@ -4,11 +4,11 @@ A modern, efficient note-taking application with automatic compression, dark mod
 
 ## Features
 
-- **Real-time auto-save** - Your notes are automatically saved as you type
-- **GZIP compression** - 60-80% storage reduction with transparent compression/decompression
-- **Dark/Light themes** - Toggle between themes with persistent preference storage
-- **Mobile responsive** - Optimized for smartphones, tablets, and desktops
-- **URL-based navigation** - Each note has a unique URL for easy sharing
+- **Real-time auto-save**
+- **GZIP compression**
+- **Dark/Light themes**
+- **Mobile responsive**
+- **URL-based navigation**
 
 ## Quick Start
 
