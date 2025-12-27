@@ -9,6 +9,11 @@ import com.lhamacorp.knotes.service.NoteService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.concurrent.CompletableFuture;
+
+import static com.lhamacorp.knotes.api.dto.NoteResponse.from;
+import static org.springframework.http.ResponseEntity.ok;
+
 @RestController
 @RequestMapping("api/notes")
 @CrossOrigin(origins = "*")
@@ -23,25 +28,25 @@ public class NoteController {
     @GetMapping("{id}")
     public ResponseEntity<NoteResponse> find(@PathVariable String id) {
         Note note = service.findById(id);
-        return ResponseEntity.ok().body(NoteResponse.from(note));
+        return ok().body(from(note));
     }
 
     @GetMapping("{id}/metadata")
     public ResponseEntity<NoteMetadata> getMetadata(@PathVariable String id) {
         NoteMetadata metadata = service.findMetadataById(id);
-        return ResponseEntity.ok().body(metadata);
+        return ok().body(metadata);
     }
 
     @PostMapping
     public ResponseEntity<NoteResponse> save(@RequestBody NoteRequest request) {
         Note savedNote = service.save(request.note());
-        return ResponseEntity.ok().body(NoteResponse.from(savedNote));
+        return ok().body(from(savedNote));
     }
 
     @PutMapping
-    public ResponseEntity<NoteResponse> update(@RequestBody NoteUpdateRequest request) {
-        Note updatedNote = service.update(request.id(), request.content());
-        return ResponseEntity.ok().body(NoteResponse.from(updatedNote));
+    public CompletableFuture<ResponseEntity<NoteResponse>> update(@RequestBody NoteUpdateRequest request) {
+        return service.queueUpdate(request.id(), request.content())
+                .thenApply(update -> ok().body(from(update)));
     }
 
 }
